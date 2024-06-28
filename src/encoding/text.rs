@@ -399,6 +399,12 @@ impl<'a> std::fmt::Debug for CounterValueEncoder<'a> {
 }
 
 impl<'a> CounterValueEncoder<'a> {
+    pub fn encode_u32(&mut self, v: u32) -> Result<(), std::fmt::Error> {
+        self.writer.write_str(" ")?;
+        self.writer.write_str(itoa::Buffer::new().format(v))?;
+        Ok(())
+    }
+
     pub fn encode_f64(&mut self, v: f64) -> Result<(), std::fmt::Error> {
         self.writer.write_str(" ")?;
         self.writer.write_str(dtoa::Buffer::new().format(v))?;
