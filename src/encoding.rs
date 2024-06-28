@@ -550,6 +550,18 @@ impl EncodeGaugeValue for u32 {
     }
 }
 
+impl EncodeGaugeValue for i32 {
+    fn encode(&self, encoder: &mut GaugeValueEncoder) -> Result<(), std::fmt::Error> {
+        encoder.encode_i32(*self)
+    }
+}
+
+impl EncodeGaugeValue for f32 {
+    fn encode(&self, encoder: &mut GaugeValueEncoder) -> Result<(), std::fmt::Error> {
+        encoder.encode_f32(*self)
+    }
+}
+
 impl EncodeGaugeValue for i64 {
     fn encode(&self, encoder: &mut GaugeValueEncoder) -> Result<(), std::fmt::Error> {
         encoder.encode_i64(*self)
@@ -576,6 +588,14 @@ enum GaugeValueEncoderInner<'a> {
 impl<'a> GaugeValueEncoder<'a> {
     fn encode_u32(&mut self, v: u32) -> Result<(), std::fmt::Error> {
         for_both_mut!(self, GaugeValueEncoderInner, e, e.encode_u32(v))
+    }
+
+    fn encode_i32(&mut self, v: i32) -> Result<(), std::fmt::Error> {
+        for_both_mut!(self, GaugeValueEncoderInner, e, e.encode_i32(v))
+    }
+
+    fn encode_f32(&mut self, v: f32) -> Result<(), std::fmt::Error> {
+        for_both_mut!(self, GaugeValueEncoderInner, e, e.encode_f32(v))
     }
 
     fn encode_i64(&mut self, v: i64) -> Result<(), std::fmt::Error> {
@@ -612,6 +632,12 @@ impl EncodeCounterValue for u32 {
     }
 }
 
+impl EncodeCounterValue for f32 {
+    fn encode(&self, encoder: &mut CounterValueEncoder) -> Result<(), std::fmt::Error> {
+        encoder.encode_f32(*self)
+    }
+}
+
 impl EncodeCounterValue for u64 {
     fn encode(&self, encoder: &mut CounterValueEncoder) -> Result<(), std::fmt::Error> {
         encoder.encode_u64(*self)
@@ -636,6 +662,10 @@ enum CounterValueEncoderInner<'a> {
 }
 
 impl<'a> CounterValueEncoder<'a> {
+    fn encode_f32(&mut self, v: f32) -> Result<(), std::fmt::Error> {
+        for_both_mut!(self, CounterValueEncoderInner, e, e.encode_f32(v))
+    }
+
     fn encode_u32(&mut self, v: u32) -> Result<(), std::fmt::Error> {
         for_both_mut!(self, CounterValueEncoderInner, e, e.encode_u32(v))
     }

@@ -399,6 +399,12 @@ impl<'a> std::fmt::Debug for CounterValueEncoder<'a> {
 }
 
 impl<'a> CounterValueEncoder<'a> {
+    pub fn encode_f32(&mut self, v: f32) -> Result<(), std::fmt::Error> {
+        self.writer.write_str(" ")?;
+        self.writer.write_str(dtoa::Buffer::new().format(v))?;
+        Ok(())
+    }
+
     pub fn encode_u32(&mut self, v: u32) -> Result<(), std::fmt::Error> {
         self.writer.write_str(" ")?;
         self.writer.write_str(itoa::Buffer::new().format(v))?;
@@ -432,6 +438,18 @@ impl<'a> GaugeValueEncoder<'a> {
     pub fn encode_u32(&mut self, v: u32) -> Result<(), std::fmt::Error> {
         self.writer.write_str(" ")?;
         self.writer.write_str(itoa::Buffer::new().format(v))?;
+        Ok(())
+    }
+
+    pub fn encode_i32(&mut self, v: i32) -> Result<(), std::fmt::Error> {
+        self.writer.write_str(" ")?;
+        self.writer.write_str(itoa::Buffer::new().format(v))?;
+        Ok(())
+    }
+
+    pub fn encode_f32(&mut self, v: f32) -> Result<(), std::fmt::Error> {
+        self.writer.write_str(" ")?;
+        self.writer.write_str(dtoa::Buffer::new().format(v))?;
         Ok(())
     }
 
